@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class iTile : iEntity
 {
-    override 
+    protected override void Setup()
+    {
+        base.Setup();
+    }
+    
 }
