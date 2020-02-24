@@ -15,13 +15,17 @@ public class Tile : MonoBehaviour, ITile, IDraggable
 
 
     public void OnPickUp()
-    { 
+    {
         //Disconnect VFX, SFX, etc
+
+        EventController.OnTilePicked?.Invoke(this);
     }
 
     public void OnPutDown()
     {
         //Find closest grid point for placement
         //Test for tile placement rules
+
+        EventController.OnTileDropped?.Invoke(this);
     }
 }

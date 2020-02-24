@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class TileGrid : MonoBehaviour, IGrid
 {
@@ -18,13 +19,15 @@ public class TileGrid : MonoBehaviour, IGrid
     [SerializeField] private LineRenderer linePrefab;
 
     private float tileSize = 1;
+    private float boundedWidth;
+    private float boundedHeight;
 
     public void Setup()
     {
         void GenerateGrid()
         {
-            float boundedWidth = Width() * tileSize / 2f;
-            float boundedHeight = Height() * tileSize/ 2f;
+            boundedWidth = Width() * tileSize / 2f;
+            boundedHeight = Height() * tileSize/ 2f;
 
             //Build a grid of line renderers, centered on the origin
             for (int row = 0; row <= Width(); row++) // We extend past width/height to build the exterior part of it
@@ -48,7 +51,28 @@ public class TileGrid : MonoBehaviour, IGrid
 
         }
 
+        
+
         GenerateGrid();
+        EventController.OnTileDropped += CheckTileLocation;
+    }
+
+    private void CheckTileLocation(Tile tile)
+    {
+        tile.transform.position = NearestGridPosition(tile.transform.position);
+    }
+
+    public Vector2 NearestGridPosition(Vector2 current)
+    {
+        float maxTileXPos = boundedWidth - tileSize / 2f;
+        float maxTileYPos = boundedHeight - tileSize / 2f;
+        float xPos = current.x.RoundNum(tileSize);
+        xPos = Mathf.Clamp(xPos, -maxTileXPos, maxTileXPos);
+
+        float yPos = current.y.RoundNum(tileSize);
+        yPos = Mathf.Clamp(yPos, -maxTileYPos, maxTileYPos);
+
+        return new Vector2(xPos, yPos);
     }
 
     public int Width() => width;

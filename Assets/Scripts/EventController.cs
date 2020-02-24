@@ -10,4 +10,7 @@ public static class EventController
     public static Action<Touch> OnMouseDown;
     public static Action<Touch> OnMouseDrag;
     public static Action<Touch> OnMouseUp;
+
+    public static Action<Tile> OnTilePicked;
+    public static Action<Tile> OnTileDropped;
 }

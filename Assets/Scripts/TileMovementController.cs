@@ -11,28 +11,22 @@ public class TileMovementController : MonoBehaviour
 
     private Tile currentTile;
 
-    private Vector2 screenScale;
+    private Vector3 pickupOffset;
 
     private void Awake()
     {
         //Cache our data to avoid needing to find it every click down
         mainCamera = Camera.main;
         tileMask = Layers.GetMask(Layers.Tile);
-        screenScale = new Vector2(1f / Screen.width, 1f / Screen.height);
-        Debug.Log(screenScale);
 
         EventController.OnMouseDown += CheckForTile;
         EventController.OnMouseDrag += DragTile;
+        EventController.OnMouseUp += DropTile;
     }
 
-    private void DragTile(Touch touch)
-    {
-        if (!currentTile)
-            return;
 
-        Vector3 tilePos = mainCamera.ScreenToWorldPoint(touch.position).SetZ(0);
-        currentTile.transform.position = tilePos;
-    }
+
+
 
     private void CheckForTile(Touch touch)
     {
@@ -43,9 +37,28 @@ public class TileMovementController : MonoBehaviour
             if (currentTile)
             {
                 currentTile.OnPickUp();
-                Debug.Log(currentTile.transform.position);
+                pickupOffset = currentTile.transform.position - mainCamera.ScreenToWorldPoint(touch.position).SetZ(0);
             }
 
         }
+    }
+
+    private void DragTile(Touch touch)
+    {
+        if (!currentTile)
+            return;
+
+        Vector3 tilePos = mainCamera.ScreenToWorldPoint(touch.position).SetZ(0) + pickupOffset;
+        currentTile.transform.position = tilePos;
+    }
+
+    private void DropTile(Touch touch)
+    {
+        if (!currentTile)
+            return;
+
+        currentTile.OnPutDown();
+
+        currentTile = null;
     }
 }
