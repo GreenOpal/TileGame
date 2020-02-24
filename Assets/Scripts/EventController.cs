@@ -5,5 +5,9 @@ using UnityEngine;
 
 public static class EventController
 {
+
+    //Touch controls
     public static Action<Touch> OnMouseDown;
+    public static Action<Touch> OnMouseDrag;
+    public static Action<Touch> OnMouseUp;
 }

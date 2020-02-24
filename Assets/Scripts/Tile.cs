@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : MonoBehaviour, ITile
+public class Tile : MonoBehaviour, ITile, IDraggable
 {
     private void Awake()
     {
@@ -11,11 +11,17 @@ public class Tile : MonoBehaviour, ITile
     }
     public void Setup()
     {
-        EventController.OnMouseDown += HandleMouse;
     }
 
-    private void HandleMouse(Touch touch)
+
+    public void OnPickUp()
+    { 
+        //Disconnect VFX, SFX, etc
+    }
+
+    public void OnPutDown()
     {
-        Debug.Log("got touch " + touch.position);
+        //Find closest grid point for placement
+        //Test for tile placement rules
     }
 }
