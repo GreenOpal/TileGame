@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEntity
+public interface IGrid : IEntity
 {
-    void Setup();
-    
-}
 
+    int Height();
+    int Width();
+}
